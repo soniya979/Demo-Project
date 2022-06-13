@@ -1,22 +1,22 @@
 #create s3 bucket for backend
 
-resource "aws_s3_bucket" "remote-backend" {
+resource "aws_s3_bucket" "remote-s3-backend" {
 
-    bucket = "remote-backend"
+    bucket = "remote-s3-backend"
 
   }
 
 
-resource "aws_s3_bucket_acl" "remote-backend-acl" {
+resource "aws_s3_bucket_acl" "remote-s3-backend-acl" {
 
-    bucket = aws_s3_bucket.remote-backend.id
+    bucket = aws_s3_bucket.remote-s3-backend.id
 
     acl    = "private"
 }
 
-resource "aws_s3_bucket_versioning" "remote-backend-versioning" {
+resource "aws_s3_bucket_versioning" "remote-s3-backend-versioning" {
 
-  bucket = aws_s3_bucket.remote-backend.id
+  bucket = aws_s3_bucket.remote-s3-backend.id
 
   versioning_configuration {
 
@@ -26,9 +26,9 @@ resource "aws_s3_bucket_versioning" "remote-backend-versioning" {
 }
 
 
-resource "aws_s3_bucket_server_side_encryption_configuration" "remote-backend-encyption" {
+resource "aws_s3_bucket_server_side_encryption_configuration" "remote-s3-backend-encyption" {
 
-  bucket = aws_s3_bucket.remote-backend.bucket
+  bucket = aws_s3_bucket.remote-s3-backend.bucket
 
   rule {
 
@@ -42,9 +42,9 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "remote-backend-en
 
 #create dynamodb for statelock
 
-resource "aws_dynamodb_table" "remote-backend-db-table-01" {
+resource "aws_dynamodb_table" "remote-s3-backend-db-table-01" {
 
-    name           = "remote-backend-db-table-01"
+    name           = "remote-s3-backend-db-table-01"
     hash_key       = "LockID"
     billing_mode   = "PROVISIONED"
     read_capacity  = 50
