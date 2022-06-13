@@ -13,7 +13,7 @@ resource "aws_internet_gateway" "redshift_vpc_igw" {
   vpc_id = aws_vpc.redshift_vpc.id
 
 depends_on = [
-    "aws_vpc.redshift_vpc"
+    aws_vpc.redshift_vpc
   ]
 }
 
@@ -29,7 +29,7 @@ resource "aws_subnet" "redshift_subnet_1" {
   }
 
 depends_on = [
-    "aws_vpc.redshift_vpc"
+    aws_vpc.redshift_vpc
   ]
 }
 
@@ -43,14 +43,14 @@ tags = {
   }
 
 depends_on = [
-    "aws_vpc.redshift_vpc"
+    aws_vpc.redshift_vpc
   ]
 }
 
 
 resource "aws_redshift_subnet_group" "redshift_subnet_group" {
   name       = "redshift-subnet-group"
-  subnet_ids = ["aws_subnet.redshift_subnet_1.id", "aws_subnet.redshift_subnet_2.id"]
+  subnet_ids = [aws_subnet.redshift_subnet_1.id, aws_subnet.redshift_subnet_2.id]
 
 tags = {
   
@@ -84,7 +84,7 @@ tags = {
 
 depends_on = [
 
-   "aws_vpc.redshift_vpc"
+   aws_vpc.redshift_vpc
 
  ]
 }
