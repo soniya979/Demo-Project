@@ -1,0 +1,35 @@
+pipeline {
+  agent any
+  
+  stages {
+    stage('SCM') {
+        steps {
+            git 'https://github.com/soniya979/terraform_2022.git'
+
+            }
+        }
+
+          stage('init') {
+                steps {
+
+                    sh 'terraform init'
+                }
+            }
+            
+            stage('plan') {
+                steps {
+
+                    sh 'terraform plan'
+                }
+            }
+
+             stage('action') {
+                steps {
+                    echo "Terraform action is -->${action}"
+
+                    sh 'terraform ${action} --auto-approve'
+                }
+            }
+
+            }
+        }
