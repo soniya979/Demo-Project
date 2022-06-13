@@ -39,10 +39,10 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "s3-demo-encyption
 
 #upload file into s3 bucket
 
-resource "aws_s3_object" "raw-data-object01" {
-  key                    = "rawdata"
-  bucket                 = aws_s3_bucket.project01-s3-data-bucket.id
-  source                  = "/home/ec2-user/rawdata/housing_price_prediction.csv"
-  server_side_encryption = "AES256"
-  etag = filemd5("/home/ec2-user/rawdata/housing_price_prediction.csv")
-}
+# resource "aws_s3_object" "raw-data-object01" {
+#   key                    = "rawdata"
+#   bucket                 = aws_s3_bucket.project01-s3-data-bucket.id
+#   source                  = "/home/ec2-user/rawdata/housing_price_prediction.csv"
+#   server_side_encryption = "AES256"
+#   etag = filemd5("/home/ec2-user/rawdata/housing_price_prediction.csv")
+# }
