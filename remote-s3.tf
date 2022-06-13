@@ -2,7 +2,7 @@
 
 resource "aws_s3_bucket" "remote01-s3-backend" {
 
-    bucket = "remote-s3-backend"
+    bucket = "remote01-s3-backend"
 
   }
 
