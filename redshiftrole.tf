@@ -34,3 +34,8 @@ assume_role_policy = <<EOF
     }
   ]
 }
+EOF
+tags = {
+    tag-key = "demo_redshift_role"
+  }
+}
