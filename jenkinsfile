@@ -4,15 +4,15 @@ pipeline {
   stages {
     stage('SCM') {
         steps {
-            git 'https://github.com/soniya979/terraform_2022.git'
+            git 'https://github.com/soniya979/Demo-Project.git'
 
             }
         }
 
-          stage('init') {
-                steps {
+     stage('init') {
+         steps {
 
-                    sh 'terraform init'
+             sh 'terraform init'
                 }
             }
             
