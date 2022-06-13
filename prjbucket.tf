@@ -41,7 +41,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "s3-demo-encyption
 resource "aws_s3_object" "raw-data-object01" {
   key                    = "rawdata"
   bucket                 = aws_s3_bucket.project01-s3-data-bucket.id
-  source                 = "Demo-Project/housing_price_prediction.csv"
+  source                 = "https://github.com/soniya979/Demo-Project/blob/main/housing_price_prediction.csv"
  server_side_encryption = "AES256"
-  etag = filemd5("Demo-Project/housing_price_prediction.csv")
+  etag = filemd5("https://github.com/soniya979/Demo-Project/blob/main/housing_price_prediction.csv")
 }
