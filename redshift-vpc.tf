@@ -1,6 +1,6 @@
 #VPC
 
-resource "aws_vpc" "redshift-vpc" {
+resource "aws_vpc" "redshift_vpc" {
   cidr_block       = "10.0.0.0/16"
   instance_tenancy = "default"
 tags = {
