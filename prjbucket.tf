@@ -45,7 +45,7 @@ data "http" "raw-data" {
 resource "aws_s3_object" "raw-data-object01" {
   key                    = "rawdata"
   bucket                 = aws_s3_bucket.project01-s3-data-bucket.id
-  content                  = http.raw-data.id
+  content                  = data.raw-data.body
   server_side_encryption = "AES256"
   #etag = filemd5("https://github.com/soniya979/Demo-Project/blob/main/housing_price_prediction.csv")
 }
