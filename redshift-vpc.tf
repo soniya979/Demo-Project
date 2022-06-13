@@ -13,7 +13,7 @@ resource "aws_internet_gateway" "redshift_vpc_igw" {
   vpc_id = aws_vpc.redshift_vpc.id
 
 depends_on = [
-    aws_vpc.redshift_vpc
+    "aws_vpc.redshift_vpc"
   ]
 }
 
@@ -23,14 +23,16 @@ resource "aws_subnet" "redshift_subnet_1" {
   cidr_block        = "10.0.1.0/24"
   availability_zone = "ap-south-1a"
   map_public_ip_on_launch = "true"
-tags = {
+  
+  tags = {
     Name = "redshift-subnet-1"
   }
 
 depends_on = [
-    aws_vpc.redshift_vpc
+    "aws_vpc.redshift_vpc"
   ]
 }
+
 resource "aws_subnet" "redshift_subnet_2" {
   vpc_id     = aws_vpc.redshift_vpc.id
   cidr_block        = "10.0.2.0/24"
@@ -41,7 +43,7 @@ tags = {
   }
 
 depends_on = [
-    aws_vpc.redshift_vpc
+    "aws_vpc.redshift_vpc"
   ]
 }
 
@@ -82,7 +84,7 @@ tags = {
 
 depends_on = [
 
-   aws_vpc.redshift_vpc
+   "aws_vpc.redshift_vpc"
 
  ]
 }
