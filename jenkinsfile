@@ -13,7 +13,7 @@ pipeline {
          steps {
 
              sh 'terraform init --migrate-state'
-             sh 'terraform ini input=false'
+             sh 'terraform inii --input=false'
              
                 }
             }
