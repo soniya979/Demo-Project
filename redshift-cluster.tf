@@ -1,6 +1,6 @@
 # launch Redshift_cluster select region same as emr
 
-#attach polici awsquery editor, aws readonly redhsift to iam user.
+#attach policy awsquery editor, aws readonly redhsift to iam user.
 
 resource "aws_redshift_cluster" "redshift-cluster-01" {
   cluster_identifier = "redshift-cluster-01"
