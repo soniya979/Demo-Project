@@ -2,38 +2,40 @@
 
 resource "aws_iam_role_policy" "s3_full_access_policy" {
   name = "redshift_s3_policy"
-  role = "aws_iam_role.demo_redshift_role.id
-policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": 
+  role = aws_iam_role.redshift_role.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
         {
-            "Effect": "Allow",
-            "Action": "s3:*",
-            "Resource": "*"
-        }
-}
-EOF
+            Effect = "Allow"
+            Action = ["s3:*"]
+            Resource = "*"
+        },
+]
+})
+
 }
 
 
-resource "aws_iam_role" "demo_redshift_role" {
-  name = "demo_redshift_role"
-assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": 
+resource "aws_iam_role" "redshift_role" {
+  name = "redshift_role"
+ 
+assume_role_policy = jsonencode({
+
+  Version = "2012-10-17"
+  Statement = [ 
     {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "redshift.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
-}
-EOF
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Sid = ""
+      Principal = {
+      Service = "redshift.amazonaws.com"
+      }      
+    },
+  ]
+})
+
 tags = {
-    tag-key = "demo_redshift_role"
+    tag-key = "redshift-role"
   }
 }
