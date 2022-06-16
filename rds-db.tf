@@ -96,12 +96,12 @@ resource "aws_route_table" "rds-db-pvtrt" {
 #Associate private subnets to private route tabel
 
 resource "aws_route_table_association" "rdsdb-pvtrtasso01" {
-  subnet_id      = aws_subnet.rds-db-pvt-subnet1.id
+  subnet_id      = aws_subnet.rds-db-subnet1.id
   route_table_id = aws_route_table.rds-db-pvtrt.id
 }
 
 resource "aws_route_table_association" "rdsdb-pvtrtasso02" {
-  subnet_id      = aws_subnet.rds-db-pvt-subnet2.id
+  subnet_id      = aws_subnet.rds-db-subnet2.id
   route_table_id = aws_route_table.rds-db-pvtrt.id
 }
 
@@ -113,15 +113,15 @@ resource "aws_route" "rdsdb-privatesnroute" {
   nat_gateway_id  = aws_nat_gateway.redshift_vpc_natgw.id
 }
 
-# DB-subnets configuration
+# DB-private subnets configuration
 
-resource "aws_subnet" "rds-db-pvt-subnet1" {
+resource "aws_subnet" "rds-db-subnet1" {
 vpc_id = aws_vpc.redshift_vpc.id
 cidr_block = "10.0.3.0/24"
 availability_zone = "ap-south-1a"
 }
 
-resource "aws_subnet" "rds-db-pvt-subnet2" {
+resource "aws_subnet" "rds-db-subnet2" {
 vpc_id = aws_vpc.redshift_vpc.id
 cidr_block = "10.0.4.0/24"
 availability_zone = "ap-south-1b"
@@ -129,9 +129,9 @@ availability_zone = "ap-south-1b"
 
 #creat a subnet group using the above subnets A and B
 
-resource "aws_db_subnet_group" "rds-db-subnet-grp" {
-name = "rds-db-subnet-grp"
-subnet_ids = [aws_subnet.rds-db-pvt-subnet1.id, aws_subnet.rds-db-pvt-subnet2.id]
+resource "aws_db_subnet_group" "db-subnet-grp" {
+name = "db-subnet-grp"
+subnet_ids = [aws_subnet.rds-db-subnet1.id, aws_subnet.rds-db-subnet2.id]
 
 tags = {
     Name = "demo rds-DB subnet group"
