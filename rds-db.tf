@@ -23,16 +23,105 @@ tags = {
   }
 }
 
+# DB- public subnets configuration for internet access
 
-# DB-sunnets configuration
+resource "aws_subnet" "rds-db-pub-subnet1" {
+vpc_id = aws_vpc.redshift_vpc.id
+cidr_block = "10.0.5.0/24"
+availability_zone = "ap-south-1a"
+}
 
-resource "aws_subnet" "rds-db-subnet1" {
+resource "aws_subnet" "rds-db-pub-subnet2" {
+vpc_id = aws_vpc.redshift_vpc.id
+cidr_block = "10.0.6.0/24"
+availability_zone = "ap-south-1b"
+}
+
+#create public route tabel
+
+resource "aws_route_table" "rdsdb-pubrt" {
+  vpc_id = aws_vpc.redshift_vpc.id
+
+  tags = {
+    Name = "rdsdb-pubrt"
+  }
+}
+
+# Associate public subnets to public route tabel
+
+resource "aws_route_table_association" "rdsdb-pubrtasso01" {
+  subnet_id      = aws_subnet.rds-db-pub-subnet1.id
+  route_table_id = aws_route_table.rdsdb-pubrt.id
+}
+
+resource "aws_route_table_association" "rdsdb-pubrtasso02" {
+  subnet_id      = aws_subnet.rds-db-pub-subnet2.id
+  route_table_id = aws_route_table.rdsdb-pubrt.id
+}
+
+#  route for interney gateway
+
+resource "aws_route" "rdsdb-publicsnroute" {
+  route_table_id = aws_route_table.rdsdb-pubrt.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id  = aws_internet_gateway.redshift_vpc_igw.id
+}
+
+
+#create Elastic_ip
+
+resource "aws_eip" "rds-eip" {
+  vpc = true
+  depends_on = [aws_internet_gateway.redshift_vpc_igw]
+}
+
+#create Nat-gateway to access private subnets
+
+resource "aws_nat_gateway" "redshift_vpc_natgw" {
+  allocation_id = aws_eip.rds-eip.id
+  subnet_id = aws_subnet.rds-db-pub-subnet2.id
+  depends_on = [aws_internet_gateway.redshift_vpc_igw]
+}
+
+#create private-route_tabel
+
+resource "aws_route_table" "rds-db-pvtrt" {
+  vpc_id = aws_vpc.redshift_vpc.id
+
+  tags = {
+    Name = "rds-db-pvtrt"
+  }
+}
+
+#Associate private subnets to private route tabel
+
+resource "aws_route_table_association" "rdsdb-pvtrtasso01" {
+  subnet_id      = aws_subnet.rds-db-pvt-subnet1.id
+  route_table_id = aws_route_table.rds-db-pvtrt.id
+}
+
+resource "aws_route_table_association" "rdsdb-pvtrtasso02" {
+  subnet_id      = aws_subnet.rds-db-pvt-subnet2.id
+  route_table_id = aws_route_table.rds-db-pvtrt.id
+}
+
+#add route for nat-gateway
+
+resource "aws_route" "rdsdb-privatesnroute" {
+  route_table_id = aws_route_table.rds-db-pvtrt.id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id  = aws_nat_gateway.redshift_vpc_natgw.id
+}
+
+# DB-subnets configuration
+
+resource "aws_subnet" "rds-db-pvt-subnet1" {
 vpc_id = aws_vpc.redshift_vpc.id
 cidr_block = "10.0.3.0/24"
 availability_zone = "ap-south-1a"
 }
 
-resource "aws_subnet" "rds-db-subnet2" {
+resource "aws_subnet" "rds-db-pvt-subnet2" {
 vpc_id = aws_vpc.redshift_vpc.id
 cidr_block = "10.0.4.0/24"
 availability_zone = "ap-south-1b"
@@ -40,14 +129,18 @@ availability_zone = "ap-south-1b"
 
 #creat a subnet group using the above subnets A and B
 
-resource "aws_db_subnet_group" "db-subnet-grp" {
-name = "db-subnet-grp"
-subnet_ids = [aws_subnet.rds-db-subnet1.id, aws_subnet.rds-db-subnet2.id]
+resource "aws_db_subnet_group" "rds-db-subnet-grp" {
+name = "rds-db-subnet-grp"
+subnet_ids = [aws_subnet.rds-db-pvt-subnet1.id, aws_subnet.rds-db-pvt-subnet2.id]
 
 tags = {
     Name = "demo rds-DB subnet group"
   }
  }
+
+
+
+#secutiry group for RDS-MYSQL
 
 resource "aws_security_group" "demosg1" {
     name = "demosg1"
