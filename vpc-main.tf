@@ -49,7 +49,7 @@ resource "aws_subnet" "redshift-pub-subnet01" {
   }
 
 # depends_on = [
-#     aws_vpc.redshift_vpc
+#     aws_vpc.demo-vpc
 #   ]
 }
 
@@ -64,7 +64,7 @@ resource "aws_subnet" "redshift-pub-subnet02" {
   }
 
 # depends_on = [
-#     aws_vpc.redshift_vpc
+#     aws_vpc.demo-vpc
 #   ]
 }
 
