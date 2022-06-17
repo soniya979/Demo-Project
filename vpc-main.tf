@@ -15,9 +15,9 @@ tags = {
 resource "aws_internet_gateway" "demo-vpc-igw" {
   vpc_id = aws_vpc.demo-vpc.id
 
-depends_on = [
-    aws_vpc.demo-vpc
-  ]
+# depends_on = [
+#     aws_vpc.demo-vpc
+#   ]
 }
 
 # RDS-MySQL public subnets in different AZs
@@ -66,4 +66,17 @@ resource "aws_subnet" "redshift-pub-subnet02" {
 # depends_on = [
 #     aws_vpc.redshift_vpc
 #   ]
+}
+
+# EMR-Cluster Public subnet
+
+resource "aws_subnet" "emr-pub-subnet01" {
+  vpc_id     = aws_vpc.demo-vpc.id
+  cidr_block = "10.0.4.0/24"
+  map_public_ip_on_launch = "true"
+  availability_zone = "ap-south-1a"
+
+  tags = {
+    name = "emr-pub-subnet01"
+  }
 }
