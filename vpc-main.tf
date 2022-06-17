@@ -80,3 +80,26 @@ resource "aws_subnet" "emr-pub-subnet01" {
     name = "emr-pub-subnet01"
   }
 }
+
+# RDS-DB subnets group
+
+resource "aws_db_subnet_group" "rds-db-subnet-group" {
+name = "rds-db-subnet-group"
+subnet_ids = [aws_subnet.rds-db-pub-subnet01.id, aws_subnet.rds-db-pub-subnet02.id]
+
+tags = {
+    Name = "rds-DB subnet group"
+  }
+ }
+
+# Redshift Cluster subnet group
+
+resource "aws_redshift_subnet_group" "redshift-subnet-group" {
+  name       = "redshift-subnet-group"
+  subnet_ids = [aws_subnet.redshift-pub-subnet01.id, aws_subnet.redshift-pub-subnet02.id]
+
+tags = {
+  
+    Name = "redshift-subnet-group"
+  }
+}
