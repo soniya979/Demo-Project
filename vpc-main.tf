@@ -88,7 +88,7 @@ name = "rds-db-subnet-group"
 subnet_ids = [aws_subnet.rds-db-pub-subnet01.id, aws_subnet.rds-db-pub-subnet02.id]
 
 tags = {
-    Name = "rds-DB subnet group"
+    Name = "rds-db-subnet-group"
   }
  }
 
